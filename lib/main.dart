@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:graduation_project/features/splash_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:graduation_project/features/Home/cubit/cubit/home_cubit.dart';
+import 'package:graduation_project/features/Home/home_screen.dart';
+import 'package:graduation_project/features/produt_details/cubit/cubit/cart_counter_cubit.dart';
+import 'package:graduation_project/features/cart/cubit/cubit/cart_cubit.dart';
+import 'package:graduation_project/features/Swap/cubit/cubit/swap_cubit.dart';
 
 void main() {
   runApp(const MyApp());
@@ -8,10 +13,31 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-        debugShowCheckedModeBanner: false, home: SplashScreen());
+    return MultiBlocProvider(
+      providers: [
+
+        BlocProvider(
+          create: (_) => ProductCubit(),
+        ),
+
+        BlocProvider(
+          create: (_) => HomeCubit()..loadProperties(),
+        ),
+
+        BlocProvider(
+          create: (_) => CartCubit(),
+        ),
+
+        BlocProvider(
+          create: (_) => SwapCubit(),
+        ),
+      ],
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: HomeScreen(),
+      ),
+    );
   }
 }
